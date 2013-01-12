@@ -47,8 +47,17 @@ namespace CloudApp4SkyDrive
             //int i;
             //for (i = 0; i < s.Length; i++)
             //    Console.WriteLine(s[i]);
-            String filePath = s[0];
-            ApiHelper.UploadFile(filePath);
+
+            if (s.Length > 1) // batch upload
+            {
+                ApiHelper.BatchUpload(s);
+            }
+            else
+            {
+                String filePath = s[0];
+                ApiHelper.UploadFile(filePath);
+            }
+            
             // comments below here are for a progress bar
             //this.Height = 87;
             

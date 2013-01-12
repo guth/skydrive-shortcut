@@ -19,6 +19,94 @@ namespace CloudApp4SkyDrive
             bw.Show();
         }
 
+        public static void BatchUpload(String[] files)
+        {
+            CreateFolder("NewFolder111");
+            String folderId = getFolderId("NewFolder111");
+            Console.WriteLine("Folder ID: " + folderId);
+
+            for(int k=0; k<files.Length; k++)
+            {
+                String fileName = files[k];
+                UploadFile(fileName, folderId);
+            }
+
+            String link = getFileLink("NewFolder111");
+            Console.WriteLine("Link to folder: " + link);
+
+            while (true)
+            {
+                try
+                {
+                    Clipboard.SetDataObject(link, true);
+                    break;
+                }
+                catch (Exception e)
+                {
+                }
+            }
+            Console.WriteLine("Clipboard text is set.");
+
+        }
+
+        private static String folderUrl = @"https://apis.live.net/v5.0/me/skydrive/";
+        public static void CreateFolder(String folderName)
+        {
+            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(folderUrl);
+            req.Method = "POST";
+            req.ContentType = "application/json";
+            req.Headers.Add("Authorization", "Bearer " + Globals.AccessToken);
+            
+            String jsonBody = String.Format("{{ \"name\": \"{0}\" }}", folderName);
+
+            StreamWriter sw = new StreamWriter(req.GetRequestStream());
+            sw.Write(jsonBody);
+            sw.Close();
+
+            HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+            Console.WriteLine(resp.Headers.Keys);
+            resp.Close();
+        }
+
+        public static void UploadFile(String filePath, String folderId)
+        {
+            String[] parts = filePath.Split(new char[] { '\\' });
+            String fileName = parts[parts.Length - 1];
+
+            FileStream fileStream = File.OpenRead(filePath);
+            byte[] arr = new byte[fileStream.Length];
+            fileStream.Read(arr, 0, (int)fileStream.Length);
+            fileStream.Close();
+
+            String url = Globals.ApiUrl + folderId + "/files/" + fileName + "?access_token="
+                            + Globals.AccessToken;
+            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(url);
+            req.Method = "PUT";
+            using (Stream output = req.GetRequestStream())
+                output.Write(arr, 0, arr.Length);
+
+            HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+            resp.Close();
+            String fileId = getFileId(fileName);
+            Console.WriteLine("File id: " + fileId);
+
+            String link = getFileLink(fileId);
+            Console.WriteLine("Link to file: " + link);
+
+            while (true)
+            {
+                try
+                {
+                    Clipboard.SetDataObject(link, true);
+                    break;
+                }
+                catch (Exception e)
+                {
+                }
+            }
+            Console.WriteLine("Clipboard text is set.");
+        }
+
         public static void UploadFile(String filePath)
         {
             String[] parts = filePath.Split(new char[] { '\\' });
@@ -76,6 +164,27 @@ namespace CloudApp4SkyDrive
                         reader.Read();
                         if (reader.TokenType == JsonToken.String
                             && reader.Value.ToString().Substring(0, 4).Equals("file"))
+                            return reader.Value.ToString();
+                    }
+                }
+            }
+            return "Failed";
+        }
+
+        public static String getFolderId(String folderName)
+        {
+            String url = String.Format(searchUrl, folderName, Globals.AccessToken);
+            String jsonResponse = getJsonResult(url);
+            JsonTextReader reader = new JsonTextReader(new StringReader(jsonResponse));
+            while (reader.Read())
+            {
+                if (reader.Value != null)
+                {
+                    if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals("id"))
+                    {
+                        reader.Read();
+                        if (reader.TokenType == JsonToken.String
+                            && reader.Value.ToString().Substring(0, 6).Equals("folder"))
                             return reader.Value.ToString();
                     }
                 }
