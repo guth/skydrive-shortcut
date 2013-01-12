@@ -64,6 +64,7 @@
     <Compile Include="DropForm.Designer.cs">
       <DependentUpon>DropForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MouseTimer.cs" />
     <Compile Include="TrayIcon.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

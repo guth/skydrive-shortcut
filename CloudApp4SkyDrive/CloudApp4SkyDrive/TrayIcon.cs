@@ -43,7 +43,12 @@ namespace CloudApp4SkyDrive
             if (e.Button == MouseButtons.Left)
             {
                 //MessageBox.Show("content", "title");
-                new DropForm().ShowDialog();
+                if (!DropForm.isOpen)
+                {
+                    DropForm.isOpen = true;
+                    new DropForm().ShowDialog();
+                    DropForm.isOpen = false;
+                }
             }
         }
 

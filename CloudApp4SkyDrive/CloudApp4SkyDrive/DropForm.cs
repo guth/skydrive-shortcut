@@ -13,6 +13,8 @@ namespace CloudApp4SkyDrive
 {
     public partial class DropForm : Form
     {
+        public static bool isOpen = false;
+
         public DropForm()
         {
             InitializeComponent();

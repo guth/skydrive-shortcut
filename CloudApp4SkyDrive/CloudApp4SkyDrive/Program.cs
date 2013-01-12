@@ -16,9 +16,13 @@ namespace CloudApp4SkyDrive
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            
+            MouseTimer m = new MouseTimer();
+            m.go();
 
             using (TrayIcon ti = new TrayIcon())
             {
+                
                 ti.Display();
                 Application.Run();
             }
