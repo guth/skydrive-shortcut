@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using Newtonsoft.Json;
 
 namespace CloudApp4SkyDrive
 {
@@ -20,12 +21,12 @@ namespace CloudApp4SkyDrive
 
         public static void UploadFile(String filePath)
         {
-            String[] parts = filePath.Split(new char[]{'\\'});
-            String fileName = parts[parts.Length-1];
-            
+            String[] parts = filePath.Split(new char[] { '\\' });
+            String fileName = parts[parts.Length - 1];
+
             FileStream fileStream = File.OpenRead(filePath);
             byte[] arr = new byte[fileStream.Length];
-            fileStream.Read(arr, 0, (int)fileStream.Length)         ;
+            fileStream.Read(arr, 0, (int)fileStream.Length);
             fileStream.Close();
 
             String url = Globals.ApiUrl + "me/skydrive/files/" + fileName + "?access_token="
@@ -40,35 +41,70 @@ namespace CloudApp4SkyDrive
 
             HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
             resp.Close();
-            
-            Console.WriteLine("Response: " + resp.ToString());
+            String fileId = getFileId(fileName);
+            Console.WriteLine("File id: " + fileId);
+
+            String link = getFileLink(fileId);
+            Console.WriteLine("Link to file: " + link);
+
+            Clipboard.Clear();
+            Clipboard.SetDataObject(link);
+            Console.WriteLine("Clipboard text is set.");
         }
 
-        public void makeRequest(String url)
+        private static String searchUrl = @"https://apis.live.net/v5.0/me/skydrive/search?q={0}&access_token={1}";
+        public static String getFileId(String fileName)
         {
-            //WebClient wc = new WebClient();
-            
-            //wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler(client_DownloadStringCompleted);
-            //wc.DownloadStringAsync(new Uri(url));
+            String url = String.Format(searchUrl, fileName, Globals.AccessToken);
+            String jsonResponse = getJsonResult(url);
+            JsonTextReader reader = new JsonTextReader(new StringReader(jsonResponse));
+            while (reader.Read())
+            {
+                if (reader.Value != null)
+                {
+                    if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals("id"))
+                    {
+                        reader.Read();
+                        if (reader.TokenType == JsonToken.String
+                            && reader.Value.ToString().Substring(0, 4).Equals("file"))
+                            return reader.Value.ToString();
+                    }
+                }
+            }
+            return "Failed";
+        }
+
+        private static string fileLinkUrl = @"https://apis.live.net/v5.0/{0}/shared_read_link?access_token={1}";
+        private static String getFileLink(String fileId)
+        {
+            String url = String.Format(fileLinkUrl, fileId, Globals.AccessToken);
+            String jsonResponse = getJsonResult(url);
+            JsonTextReader reader = new JsonTextReader(new StringReader(jsonResponse));
+            while (reader.Read())
+            {
+                if (reader.Value != null)
+                {
+                    Console.WriteLine("Token: {0}, Value: {1}", reader.TokenType, reader.Value);
+                    if (reader.TokenType == JsonToken.PropertyName && reader.Value.Equals("link"))
+                    {
+                        reader.Read();
+                        return reader.Value.ToString();
+                    }
+                }
+            }
+            return "Failed to get link for file ID: " + fileId;
+        }
+
+        private static String getJsonResult(String url)
+        {
             HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(url);
-            req.Method = "PUT";
-            req.ContentType = "application/octet-stream";
-            Stream dataStream = req.GetRequestStream();
-            
-        }
+            req.Method = "GET";
+            HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+            StreamReader sr = new StreamReader(resp.GetResponseStream());
+            String jsonContent = sr.ReadToEnd();
+            resp.Close();
 
-        void client_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
-        {
-            try
-            {
-                Console.WriteLine(e.Result);
-            }
-            catch (System.Reflection.TargetInvocationException tie)
-            {
-                Console.WriteLine(tie.InnerException.ToString());
-            }
-            //userData = deserializeJson(e.Result);
-            //changeView();
+            return jsonContent;
         }
     }
 }

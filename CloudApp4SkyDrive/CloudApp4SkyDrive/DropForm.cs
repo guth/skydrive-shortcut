@@ -18,6 +18,8 @@ namespace CloudApp4SkyDrive
         public DropForm()
         {
             InitializeComponent();
+            //this.SetDesktopLocation(30, 30);
+            this.DesktopLocation = new Point(0, 0);
             this.DragDrop += new
                 System.Windows.Forms.DragEventHandler(this.DropForm_DragDrop);
             this.DragEnter += new

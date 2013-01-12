@@ -22,7 +22,6 @@ namespace CloudApp4SkyDrive
 
             using (TrayIcon ti = new TrayIcon())
             {
-                
                 ti.Display();
                 Application.Run();
             }
