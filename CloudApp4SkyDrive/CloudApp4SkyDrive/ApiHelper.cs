@@ -21,8 +21,11 @@ namespace CloudApp4SkyDrive
 
         public static void BatchUpload(String[] files)
         {
-            CreateFolder("NewFolder111");
-            String folderId = getFolderId("NewFolder111");
+            DateTime now = DateTime.Now;
+            String timeString = now.ToString("M-d-yyyy h-mm-ss tt");
+            String folderName = "Folder " + timeString;
+            CreateFolder(folderName);
+            String folderId = getFolderId(folderName);
             Console.WriteLine("Folder ID: " + folderId);
 
             for(int k=0; k<files.Length; k++)
@@ -31,7 +34,7 @@ namespace CloudApp4SkyDrive
                 UploadFile(fileName, folderId);
             }
 
-            String link = getFileLink("NewFolder111");
+            String link = getFileLink(folderId);
             Console.WriteLine("Link to folder: " + link);
 
             while (true)
