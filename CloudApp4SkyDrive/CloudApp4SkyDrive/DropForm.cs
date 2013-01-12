@@ -53,8 +53,9 @@ namespace CloudApp4SkyDrive
                 String filePath = s[0];
                 ApiHelper.UploadFileAndCopyLink(filePath);
             }
-            
-            animateUpload();
+
+            TrayIcon.DisplaySuccessMessage();
+            this.Close();
         }
 
         private void DropForm_KeyDown(object sender, KeyEventArgs e)
@@ -65,19 +66,15 @@ namespace CloudApp4SkyDrive
             if (e.KeyCode == Keys.V && Form.ModifierKeys == Keys.Control)
             {
                 if(Clipboard.ContainsImage()) {
-                hideInstructions();
-
-                ImageConverter converter = new ImageConverter();
-                Console.WriteLine("screenshot " + timeString);
-                ApiHelper.UploadFileAndCopyLink("screenshot " + timeString, (byte[])converter.ConvertTo(Clipboard.GetImage(), typeof(byte[])));
-
-                animateUpload();
-                
+                    ImageConverter converter = new ImageConverter();
+                    hideInstructions();
+                    ApiHelper.UploadFileAndCopyLink("screenshot " + timeString, (byte[])converter.ConvertTo(Clipboard.GetImage(), typeof(byte[])));
                 }
                 else if (Clipboard.ContainsFileDropList())
                 {
                     String[] s = (String[])Clipboard.GetData(DataFormats.FileDrop);
 
+                    hideInstructions();
                     if (s.Length > 1) // batch upload
                     {
                         ApiHelper.BatchUpload(s);
@@ -87,36 +84,50 @@ namespace CloudApp4SkyDrive
                         String filePath = s[0];
                         ApiHelper.UploadFileAndCopyLink(filePath);
                     }
-                    this.Close();
                 }
                 else if (Clipboard.ContainsText())
                 {
+                    hideInstructions();
+
                     String text = Clipboard.GetText();
                     byte[] data = new UTF8Encoding().GetBytes(text);
 
                     String fileName = "New File " + timeString + ".txt";
                     Console.WriteLine("Uploading " + fileName);
                     ApiHelper.UploadFileAndCopyLink(fileName, data);
-                    this.Close();
                 }
+                TrayIcon.DisplaySuccessMessage();
+                this.Close();
             }
         }
 
         private void hideInstructions()
         {
             InstructionLabel.Visible = false;
-        }
+            ProgressLabel.Visible = true;
+            // force UI update before sleep
+            ProgressLabel.Refresh();
 
-        private void animateUpload()
-        {
-            SuccessLabel.Visible = true;
-            SuccessLabel.Refresh();
+            Thread.Sleep(500);
 
-            Thread.Sleep(1500);
-
-            SuccessLabel.Visible = false;
-            InstructionLabel.Visible = true;
             this.Hide();
+
+            InstructionLabel.Visible = true;
+            ProgressLabel.Visible = false;
         }
+
+        /*private void fadeForm()
+        {
+            int NumberOfSteps = 200;
+            float StepVal = (float)(100f / NumberOfSteps);
+            float fOpacity = 100f;
+
+            for (byte b = 0; b < NumberOfSteps; b++)
+            {
+                this.Opacity = fOpacity / 100;
+                this.Refresh();
+                fOpacity -= StepVal;
+            }
+        }*/
     }
 }

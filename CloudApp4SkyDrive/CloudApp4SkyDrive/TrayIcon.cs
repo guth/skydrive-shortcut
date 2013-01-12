@@ -12,11 +12,15 @@ namespace CloudApp4SkyDrive
 {
     class TrayIcon : IDisposable
     {
-        NotifyIcon ni;
+        static NotifyIcon ni;
 
         public TrayIcon()
         {
             ni = new NotifyIcon();
+        }
+
+        public static void DisplaySuccessMessage() {
+            ni.ShowBalloonTip(2000, "Upload succeeded!", "Your upload is complete.", ToolTipIcon.Info);
         }
 
         public void Display()
