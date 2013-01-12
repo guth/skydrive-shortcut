@@ -23,7 +23,7 @@ namespace CloudApp4SkyDrive
             String signInUrl = @"https://login.live.com/oauth20_authorize.srf?client_id={0}&redirect_uri=https://login.live.com/oauth20_desktop.srf&response_type=token&scope={1}";
             signInUrl = String.Format(signInUrl, Globals.ClientID, Globals.Scope);
             webBrowser.Navigate(signInUrl);
-            this.Show();
+            this.ShowDialog();
         }
 
         private void webBrowser_LoadCompleted(object sender, System.Windows.Navigation.NavigationEventArgs e)
