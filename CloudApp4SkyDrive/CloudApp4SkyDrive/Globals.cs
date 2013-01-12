@@ -14,5 +14,6 @@ namespace CloudApp4SkyDrive
         public static String AccessToken = null;
         public static String ApiUrl = @"https://apis.live.net/v5.0/";
         public static bool HotCornerEnabled = true;
+        public static bool LoginWindowOpen = false;
     }
 }

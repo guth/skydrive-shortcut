@@ -34,7 +34,12 @@ namespace CloudApp4SkyDrive
         {
             if (Globals.AccessToken == null) // Not logged in
             {
-                BrowserWindow bw = new BrowserWindow();
+                if (!Globals.LoginWindowOpen)
+                {
+                    Globals.LoginWindowOpen = true;
+                    BrowserWindow bw = new BrowserWindow();
+                    Globals.LoginWindowOpen = false;
+                }
             }
             else
             {
