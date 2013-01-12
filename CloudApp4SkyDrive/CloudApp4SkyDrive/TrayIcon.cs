@@ -23,7 +23,7 @@ namespace CloudApp4SkyDrive
         {
             // put the icon in the system tray
             // TODO: use your own icon
-            ni.Icon = Resources.TrayIconV2;
+            ni.Icon = Resources.TrayIcon;
             ni.Text = "SkyDrive Shortcut";
             ni.Visible = true;
 
