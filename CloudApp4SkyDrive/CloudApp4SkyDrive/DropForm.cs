@@ -26,10 +26,6 @@ namespace CloudApp4SkyDrive
                 System.Windows.Forms.DragEventHandler(this.DropForm_DragEnter);
         }
 
-        private void DropForm_Load(object sender, EventArgs e)
-        {
-        }
-
         private void DropForm_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -40,7 +36,7 @@ namespace CloudApp4SkyDrive
 
         private void DropForm_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
         {
-            InstructionLabel.Visible = false;
+            hideInstructions();
 
             // code for actually dealing with files
             string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
@@ -49,26 +45,39 @@ namespace CloudApp4SkyDrive
             //    Console.WriteLine(s[i]);
             String filePath = s[0];
             ApiHelper.UploadFile(filePath);
-            // comments below here are for a progress bar
-            //this.Height = 87;
-            
-            /*progressBar1.Visible = true;
 
-            for (int i = 0; i < 100; i+=10)
-            {
-                progressBar1.Value = i;
-                Thread.Sleep(100);
+            animateUpload();
+        }
+
+        private void DropForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.V && Form.ModifierKeys == Keys.Control && Clipboard.ContainsImage()) {
+                hideInstructions();
+
+                DateTime now = DateTime.Now;
+                String timeString = now.ToString("M-d-yyyy h-mm-ss tt");
+                ImageConverter converter = new ImageConverter();
+                Console.WriteLine("screenshot " + timeString);
+                ApiHelper.UploadFile("screenshot " + timeString, (byte[])converter.ConvertTo(Clipboard.GetImage(), typeof(byte[])));
+
+                animateUpload();
             }
+        }
 
-            this.Height = 309;*/
+        private void hideInstructions()
+        {
+            InstructionLabel.Visible = false;
+        }
+
+        private void animateUpload()
+        {
             SuccessLabel.Visible = true;
             SuccessLabel.Refresh();
 
             Thread.Sleep(1500);
 
             SuccessLabel.Visible = false;
-            //InstructionLabel.Visible = true;
-            progressBar1.Visible = false;
+            InstructionLabel.Visible = true;
             this.Hide();
         }
     }

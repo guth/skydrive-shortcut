@@ -29,6 +29,10 @@ namespace CloudApp4SkyDrive
             fileStream.Read(arr, 0, (int)fileStream.Length);
             fileStream.Close();
 
+            UploadFile(fileName, arr);
+        }
+
+        public static void UploadFile(String fileName, byte[] arr) {
             String url = Globals.ApiUrl + "me/skydrive/files/" + fileName + "?access_token="
                             + Globals.AccessToken;
             HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(url);
