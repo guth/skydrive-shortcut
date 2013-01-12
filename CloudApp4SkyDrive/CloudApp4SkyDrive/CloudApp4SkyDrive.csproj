@@ -97,8 +97,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\Exit.png" />
-    <Content Include="Images\icon.bmp" />
-    <Content Include="Images\SystemTrayApp.ico" />
+    <Content Include="Images\icon.ico" />
+    <Content Include="Images\SkyDrive Shortcut Logo V2.ico" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="BrowserWindow.xaml">
