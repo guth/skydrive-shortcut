@@ -27,6 +27,8 @@ namespace CloudApp4SkyDrive
             ni.Text = "SkyDrive Shortcut";
             ni.Visible = true;
 
+            ni.MouseClick += new MouseEventHandler(ni_MouseClick);
+
             // make a right-click menu
             ni.ContextMenuStrip = new ContextMenus().Create();
         }
@@ -34,6 +36,15 @@ namespace CloudApp4SkyDrive
         public void Dispose()
         {
             ni.Dispose();
+        }
+
+        void ni_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                //MessageBox.Show("content", "title");
+                new DropForm().ShowDialog();
+            }
         }
 
     }
