@@ -59,13 +59,14 @@ namespace CloudApp4SkyDrive
 
         private void DropForm_KeyDown(object sender, KeyEventArgs e)
         {
+            DateTime now = DateTime.Now;
+            String timeString = now.ToString("M-d-yyyy h-mm-ss tt");
+
             if (e.KeyCode == Keys.V && Form.ModifierKeys == Keys.Control)
             {
                 if(Clipboard.ContainsImage()) {
                 hideInstructions();
 
-                DateTime now = DateTime.Now;
-                String timeString = now.ToString("M-d-yyyy h-mm-ss tt");
                 ImageConverter converter = new ImageConverter();
                 Console.WriteLine("screenshot " + timeString);
                 ApiHelper.UploadFileAndCopyLink("screenshot " + timeString, (byte[])converter.ConvertTo(Clipboard.GetImage(), typeof(byte[])));
@@ -86,6 +87,16 @@ namespace CloudApp4SkyDrive
                         String filePath = s[0];
                         ApiHelper.UploadFileAndCopyLink(filePath);
                     }
+                    this.Close();
+                }
+                else if (Clipboard.ContainsText())
+                {
+                    String text = Clipboard.GetText();
+                    byte[] data = new UTF8Encoding().GetBytes(text);
+
+                    String fileName = "New File " + timeString + ".txt";
+                    Console.WriteLine("Uploading " + fileName);
+                    ApiHelper.UploadFileAndCopyLink(fileName, data);
                     this.Close();
                 }
             }
