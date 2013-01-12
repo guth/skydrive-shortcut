@@ -42,12 +42,19 @@ namespace CloudApp4SkyDrive
         {
             if (e.Button == MouseButtons.Left)
             {
-                //MessageBox.Show("content", "title");
-                if (!DropForm.isOpen)
+                if (Globals.AccessToken == null) // Not logged in
                 {
-                    DropForm.isOpen = true;
-                    new DropForm().ShowDialog();
-                    DropForm.isOpen = false;
+                    BrowserWindow bw = new BrowserWindow();
+                }
+                else
+                {
+                    //MessageBox.Show("content", "title");
+                    if (!DropForm.isOpen)
+                    {
+                        DropForm.isOpen = true;
+                        new DropForm().ShowDialog();
+                        DropForm.isOpen = false;
+                    }
                 }
             }
         }

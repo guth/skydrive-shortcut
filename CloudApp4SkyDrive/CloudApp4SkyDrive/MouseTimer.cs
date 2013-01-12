@@ -31,10 +31,20 @@ namespace CloudApp4SkyDrive
 
         private void ShowDropDownDialog()
         {
-            DropForm.isOpen = true;
-            DropForm d = new DropForm();
-            d.ShowDialog();
-            DropForm.isOpen = false;
+            if (Globals.AccessToken == null) // Not logged in
+            {
+                BrowserWindow bw = new BrowserWindow();
+            }
+            else
+            {
+                //MessageBox.Show("content", "title");
+                if (!DropForm.isOpen)
+                {
+                    DropForm.isOpen = true;
+                    new DropForm().ShowDialog();
+                    DropForm.isOpen = false;
+                }
+            }
         }
     }
 }

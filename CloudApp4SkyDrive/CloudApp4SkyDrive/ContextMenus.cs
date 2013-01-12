@@ -19,12 +19,6 @@ namespace CloudApp4SkyDrive
             ContextMenuStrip menu = new ContextMenuStrip();
             ToolStripMenuItem item;
 
-            // Login button
-            ToolStripMenuItem loginItem = new ToolStripMenuItem();
-            loginItem.Text = "Login";
-            loginItem.Click += new System.EventHandler(Login_Click);
-            menu.Items.Add(loginItem);
-
             // Exit button
             item = new ToolStripMenuItem();
             item.Text = "Exit";
@@ -34,11 +28,6 @@ namespace CloudApp4SkyDrive
             menu.Items.Add(item);
 
             return menu;
-        }
-
-        void Login_Click(object sender, EventArgs e)
-        {
-            BrowserWindow bw = new BrowserWindow();
         }
 
         void Exit_Click(object sender, EventArgs e)
