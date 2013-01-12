@@ -155,10 +155,13 @@ namespace CloudApp4SkyDrive
             resp.Close();
         }
 
+        const int MAX_TRIES = 10;
         public static void CopyToClipboard(String value)
         {
+            int tries = 0;
             while (true)
             {
+                tries++;
                 try
                 {
                     Clipboard.SetDataObject(value, true);
@@ -166,6 +169,11 @@ namespace CloudApp4SkyDrive
                 }
                 catch (Exception e)
                 {
+                }
+                if (tries >= MAX_TRIES)
+                {
+                    MessageBox.Show("SkyDrive Shortcut encountered and error and the link could not be copied to your clipboard auotmatically. Here it is: " + value);
+                    return;
                 }
             }
             Console.WriteLine("Clipboard text is set.");
