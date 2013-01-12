@@ -36,15 +36,18 @@ namespace CloudApp4SkyDrive
 
         private void DropForm_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
         {
-            // code for actually dealing with files
-            /*string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            int i;
-            for (i = 0; i < s.Length; i++)
-                listBox1.Items.Add(s[i]);*/
+            InstructionLabel.Visible = false;
 
+            // code for actually dealing with files
+            string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            //int i;
+            //for (i = 0; i < s.Length; i++)
+            //    Console.WriteLine(s[i]);
+            String filePath = s[0];
+            ApiHelper.UploadFile(filePath);
             // comments below here are for a progress bar
             //this.Height = 87;
-            InstructionLabel.Visible = false;
+            
             /*progressBar1.Visible = true;
 
             for (int i = 0; i < 100; i+=10)

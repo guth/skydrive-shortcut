@@ -36,7 +36,9 @@ namespace CloudApp4SkyDrive
                 //    App.Current.Properties.Clear();
                 //}
                 String accessToken = Regex.Split(e.Uri.AbsoluteUri, "access_token=")[1];
+                accessToken = Regex.Split(accessToken, "&token_type")[0];
                 Console.WriteLine("Access token: " + accessToken);
+                Globals.AccessToken = accessToken;
                 //App.Current.Properties.Add("auth_code", auth_code);
                 this.Close();
             }

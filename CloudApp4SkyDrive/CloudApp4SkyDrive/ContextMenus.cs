@@ -37,7 +37,8 @@ namespace CloudApp4SkyDrive
         }
 
         void Login_Click(object sender, EventArgs e)
-        {   
+        {
+            BrowserWindow bw = new BrowserWindow();
         }
 
         void Exit_Click(object sender, EventArgs e)
