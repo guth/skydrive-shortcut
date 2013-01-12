@@ -21,7 +21,8 @@ namespace CloudApp4SkyDrive
 
         private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            if (Cursor.Position.X < 5 && Cursor.Position.Y < 5 && !DropForm.isOpen)
+            if (Cursor.Position.X < 5 && Cursor.Position.Y < 5
+                    && Globals.HotCornerEnabled && !DropForm.isOpen)
             {
                 Thread t = new Thread(new ThreadStart(ShowDropDownDialog));
                 t.SetApartmentState(ApartmentState.STA);

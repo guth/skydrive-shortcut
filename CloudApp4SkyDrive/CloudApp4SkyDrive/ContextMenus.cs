@@ -14,10 +14,20 @@ namespace CloudApp4SkyDrive
 {
     class ContextMenus
     {
+        private CheckBox hotCornerCheckBox;
+
         public ContextMenuStrip Create()
         {
             ContextMenuStrip menu = new ContextMenuStrip();
             ToolStripMenuItem item;
+
+            // Check box to enable/disable the hot corner
+            hotCornerCheckBox = new CheckBox();
+            hotCornerCheckBox.Checked = true;
+            hotCornerCheckBox.CheckedChanged += new EventHandler(hotCornerCheckBox_CheckChanged);
+            ToolStripControlHost itemHost = new ToolStripControlHost(hotCornerCheckBox);
+            itemHost.Text = "Hot Corner Enabled";
+            menu.Items.Add(itemHost);
 
             // Exit button
             item = new ToolStripMenuItem();
@@ -28,6 +38,11 @@ namespace CloudApp4SkyDrive
             menu.Items.Add(item);
 
             return menu;
+        }
+
+        void hotCornerCheckBox_CheckChanged(object sender, EventArgs e)
+        {
+            Globals.HotCornerEnabled = hotCornerCheckBox.Checked;
         }
 
         void Exit_Click(object sender, EventArgs e)
