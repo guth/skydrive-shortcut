@@ -47,8 +47,17 @@ namespace CloudApp4SkyDrive
             String link = getFileLink(fileId);
             Console.WriteLine("Link to file: " + link);
 
-            Clipboard.Clear();
-            Clipboard.SetDataObject(link);
+            while (true)
+            {
+                try
+                {
+                    Clipboard.SetDataObject(link, true);
+                    break;
+                }
+                catch (Exception e)
+                {
+                }
+            }
             Console.WriteLine("Clipboard text is set.");
         }
 
