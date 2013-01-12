@@ -59,7 +59,9 @@ namespace CloudApp4SkyDrive
 
         private void DropForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.V && Form.ModifierKeys == Keys.Control && Clipboard.ContainsImage()) {
+            if (e.KeyCode == Keys.V && Form.ModifierKeys == Keys.Control)
+            {
+                if(Clipboard.ContainsImage()) {
                 hideInstructions();
 
                 DateTime now = DateTime.Now;
@@ -69,6 +71,23 @@ namespace CloudApp4SkyDrive
                 ApiHelper.UploadFileAndCopyLink("screenshot " + timeString, (byte[])converter.ConvertTo(Clipboard.GetImage(), typeof(byte[])));
 
                 animateUpload();
+                
+                }
+                else if (Clipboard.ContainsFileDropList())
+                {
+                    String[] s = (String[])Clipboard.GetData(DataFormats.FileDrop);
+
+                    if (s.Length > 1) // batch upload
+                    {
+                        ApiHelper.BatchUpload(s);
+                    }
+                    else
+                    {
+                        String filePath = s[0];
+                        ApiHelper.UploadFileAndCopyLink(filePath);
+                    }
+                    this.Close();
+                }
             }
         }
 
