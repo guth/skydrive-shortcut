@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Web;
+//using System.Windows;
 using System.Windows.Forms;
 using CloudApp4SkyDrive.Properties;
 
@@ -18,6 +19,12 @@ namespace CloudApp4SkyDrive
             ContextMenuStrip menu = new ContextMenuStrip();
             ToolStripMenuItem item;
 
+            // Login button
+            ToolStripMenuItem loginItem = new ToolStripMenuItem();
+            loginItem.Text = "Login";
+            loginItem.Click += new System.EventHandler(Login_Click);
+            menu.Items.Add(loginItem);
+
             // Exit button
             item = new ToolStripMenuItem();
             item.Text = "Exit";
@@ -27,6 +34,10 @@ namespace CloudApp4SkyDrive
             menu.Items.Add(item);
 
             return menu;
+        }
+
+        void Login_Click(object sender, EventArgs e)
+        {   
         }
 
         void Exit_Click(object sender, EventArgs e)
