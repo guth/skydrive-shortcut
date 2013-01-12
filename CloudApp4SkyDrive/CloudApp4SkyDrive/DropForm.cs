@@ -24,6 +24,7 @@ namespace CloudApp4SkyDrive
                 System.Windows.Forms.DragEventHandler(this.DropForm_DragDrop);
             this.DragEnter += new
                 System.Windows.Forms.DragEventHandler(this.DropForm_DragEnter);
+            this.Focus();
         }
 
         private void DropForm_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
