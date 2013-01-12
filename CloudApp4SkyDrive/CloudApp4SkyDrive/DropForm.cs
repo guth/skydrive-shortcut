@@ -51,7 +51,7 @@ namespace CloudApp4SkyDrive
             else
             {
                 String filePath = s[0];
-                ApiHelper.UploadFile(filePath);
+                ApiHelper.UploadFileAndCopyLink(filePath);
             }
             
             animateUpload();
@@ -66,7 +66,7 @@ namespace CloudApp4SkyDrive
                 String timeString = now.ToString("M-d-yyyy h-mm-ss tt");
                 ImageConverter converter = new ImageConverter();
                 Console.WriteLine("screenshot " + timeString);
-                ApiHelper.UploadFile("screenshot " + timeString, (byte[])converter.ConvertTo(Clipboard.GetImage(), typeof(byte[])));
+                ApiHelper.UploadFileAndCopyLink("screenshot " + timeString, (byte[])converter.ConvertTo(Clipboard.GetImage(), typeof(byte[])));
 
                 animateUpload();
             }

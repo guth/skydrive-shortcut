@@ -8,15 +8,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Newtonsoft.Json;
+using BitlyDotNET.Implementations;
+using BitlyDotNET.Interfaces;
 
 namespace CloudApp4SkyDrive
 {
     class ApiHelper
     {
-        public void authenticateUser()
+        private const String bitlyUsername = "guth";
+        private const String bitlyApiKey = "R_9a7b537e10762a25c7c20c407fc7f50f";
+
+        private static IBitlyService bitlyService = new BitlyService(bitlyUsername, bitlyApiKey);
+        
+        public static String shortenUrl(String url)
         {
-            BrowserWindow bw = new BrowserWindow();
-            bw.Show();
+            String shortened = bitlyService.Shorten(url);
+            return shortened;
         }
 
         public static void BatchUpload(String[] files)
@@ -34,21 +41,10 @@ namespace CloudApp4SkyDrive
                 UploadFile(fileName, folderId);
             }
 
-            String link = getFileLink(folderId);
+            String link = getShortenedFileLink(folderId);
             Console.WriteLine("Link to folder: " + link);
 
-            while (true)
-            {
-                try
-                {
-                    Clipboard.SetDataObject(link, true);
-                    break;
-                }
-                catch (Exception e)
-                {
-                }
-            }
-            Console.WriteLine("Clipboard text is set.");
+            CopyToClipboard(link);
 
         }
 
@@ -71,6 +67,19 @@ namespace CloudApp4SkyDrive
             resp.Close();
         }
 
+        public static void UploadFileAndCopyLink(String filePath, String folderId)
+        {
+            UploadFile(filePath, folderId);
+            String[] parts = filePath.Split(new char[] { '\\' });
+            String fileName = parts[parts.Length - 1];
+            String fileId = getFileId(fileName);
+
+            String link = getShortenedFileLink(fileId);
+            Console.WriteLine("Link to file: " + link);
+
+            CopyToClipboard(link);
+        }
+
         public static void UploadFile(String filePath, String folderId)
         {
             String[] parts = filePath.Split(new char[] { '\\' });
@@ -90,24 +99,19 @@ namespace CloudApp4SkyDrive
 
             HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
             resp.Close();
-            String fileId = getFileId(fileName);
-            Console.WriteLine("File id: " + fileId);
+        }
 
-            String link = getFileLink(fileId);
+        public static void UploadFileAndCopyLink(String filePath)
+        {
+            UploadFile(filePath);
+            String[] parts = filePath.Split(new char[] { '\\' });
+            String fileName = parts[parts.Length - 1];
+            String fileId = getFileId(fileName);
+
+            String link = getShortenedFileLink(fileId);
             Console.WriteLine("Link to file: " + link);
 
-            while (true)
-            {
-                try
-                {
-                    Clipboard.SetDataObject(link, true);
-                    break;
-                }
-                catch (Exception e)
-                {
-                }
-            }
-            Console.WriteLine("Clipboard text is set.");
+            CopyToClipboard(link);
         }
 
         public static void UploadFile(String filePath)
@@ -123,6 +127,19 @@ namespace CloudApp4SkyDrive
             UploadFile(fileName, arr);
         }
 
+        public static void UploadFileAndCopyLink(String fileName, byte[] arr)
+        {
+            UploadFile(fileName, arr);
+
+            String fileId = getFileId(fileName);
+            Console.WriteLine("File id: " + fileId);
+
+            String link = getShortenedFileLink(fileId);
+            Console.WriteLine("Link to file: " + link);
+
+            CopyToClipboard(link);
+        }
+
         public static void UploadFile(String fileName, byte[] arr) {
             String url = Globals.ApiUrl + "me/skydrive/files/" + fileName + "?access_token="
                             + Globals.AccessToken;
@@ -136,17 +153,15 @@ namespace CloudApp4SkyDrive
 
             HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
             resp.Close();
-            String fileId = getFileId(fileName);
-            Console.WriteLine("File id: " + fileId);
+        }
 
-            String link = getFileLink(fileId);
-            Console.WriteLine("Link to file: " + link);
-
+        public static void CopyToClipboard(String value)
+        {
             while (true)
             {
                 try
                 {
-                    Clipboard.SetDataObject(link, true);
+                    Clipboard.SetDataObject(value, true);
                     break;
                 }
                 catch (Exception e)
@@ -218,6 +233,16 @@ namespace CloudApp4SkyDrive
                 }
             }
             return "Failed to get link for file ID: " + fileId;
+        }
+        
+        private static String getShortenedFileLink(String fileId)
+        {
+            String longLink = getFileLink(fileId);
+            String shortenedLink = shortenUrl(longLink);
+            if(shortenedLink != null)
+                return shortenedLink;
+            else
+                return longLink;
         }
 
         private static String getJsonResult(String url)
