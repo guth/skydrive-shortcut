@@ -43,11 +43,18 @@ namespace CloudApp4SkyDrive
             }
             else
             {
-                //MessageBox.Show("content", "title");
                 if (!DropForm.isOpen)
                 {
                     DropForm.isOpen = true;
-                    new DropForm().ShowDialog();
+                    DropForm df = new DropForm();
+
+                    // bring the form to front
+                    df.Show();
+                    df.Activate();
+                    // hack to keep it open (by preventing the thread from ending)
+                    df.Hide();
+                    df.ShowDialog();
+
                     DropForm.isOpen = false;
                 }
             }

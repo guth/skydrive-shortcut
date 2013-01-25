@@ -23,6 +23,14 @@ namespace CloudApp4SkyDrive
             String signInUrl = @"https://login.live.com/oauth20_authorize.srf?client_id={0}&redirect_uri=https://login.live.com/oauth20_desktop.srf&response_type=token&scope={1}";
             signInUrl = String.Format(signInUrl, Globals.ClientID, Globals.Scope);
             webBrowser.Navigate(signInUrl);
+
+            // bring the window to front
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DropForm));
+            //this.Icon = this.Icon = ((System.Windows.Media.ImageSource)(resources.GetObject("$this.Icon")));
+            this.Show();
+            this.Activate();
+            // hack to keep it open (by preventing the thread from ending)
+            this.Hide();
             this.ShowDialog();
         }
 
