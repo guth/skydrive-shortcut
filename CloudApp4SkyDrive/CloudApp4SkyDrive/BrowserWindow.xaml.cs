@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 
-namespace CloudApp4SkyDrive
+namespace SkyDrive_Shortcut
 {
     public partial class BrowserWindow : Window
     {

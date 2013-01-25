@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Windows.Forms;
-using CloudApp4SkyDrive.Properties;
+using SkyDrive_Shortcut.Properties;
 
-namespace CloudApp4SkyDrive
+namespace SkyDrive_Shortcut
 {
     class TrayIcon : IDisposable
     {

@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 using BitlyDotNET.Implementations;
 using BitlyDotNET.Interfaces;
 
-namespace CloudApp4SkyDrive
+namespace SkyDrive_Shortcut
 {
     class ApiHelper
     {

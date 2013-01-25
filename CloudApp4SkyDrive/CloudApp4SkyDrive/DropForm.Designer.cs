@@ -1,4 +1,4 @@
-﻿namespace CloudApp4SkyDrive
+﻿namespace SkyDrive_Shortcut
 {
     partial class DropForm
     {
@@ -66,7 +66,7 @@
             this.Controls.Add(this.InstructionLabel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DropForm";
-            this.Text = "DropTest";
+            this.Text = "SkyDrive Shortcut";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DropForm_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();

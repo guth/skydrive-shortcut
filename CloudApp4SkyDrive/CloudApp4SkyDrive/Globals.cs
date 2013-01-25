@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CloudApp4SkyDrive
+namespace SkyDrive_Shortcut
 {
     class Globals
     {

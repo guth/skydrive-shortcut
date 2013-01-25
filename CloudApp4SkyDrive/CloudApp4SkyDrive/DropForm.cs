@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 
-namespace CloudApp4SkyDrive
+namespace SkyDrive_Shortcut
 {
     public partial class DropForm : Form
     {

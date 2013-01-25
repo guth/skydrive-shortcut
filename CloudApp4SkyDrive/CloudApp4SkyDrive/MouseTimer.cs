@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 
-namespace CloudApp4SkyDrive
+namespace SkyDrive_Shortcut
 {
     class MouseTimer
     {
