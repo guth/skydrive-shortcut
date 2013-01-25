@@ -1,0 +1,11 @@
+.carousel-caption {
+	background: rgba(255, 255, 255, 0.75);
+}
+.carousel-caption p {
+	color: #333;
+}
+
+.top {
+	top: 0px;
+	bottom: auto;
+}
