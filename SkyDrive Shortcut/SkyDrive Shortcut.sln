@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyDrive Shortcut", "CloudApp4SkyDrive\SkyDrive Shortcut.csproj", "{E84735DF-28BA-4681-B994-C23834B228A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyDrive Shortcut", "SkyDrive Shortcut\SkyDrive Shortcut.csproj", "{E84735DF-28BA-4681-B994-C23834B228A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
